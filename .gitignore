@@ -1,0 +1,4 @@
+/tg-bot/.env
+/tg-bot/venv
+/client/venv
+/server/venv
