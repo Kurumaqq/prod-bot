@@ -2,3 +2,6 @@
 /tg-bot/venv
 /client/venv
 /server/venv
+/server/__pycache__
+/client/__pycache__
+/tg-bot/__pycache__
