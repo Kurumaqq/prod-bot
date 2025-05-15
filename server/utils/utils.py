@@ -1,8 +1,18 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import json
+
+def add_time(name: str, path: str, hours:str):
+    full_name = f'{name}_time_{hours}'
+
+    with open(path, 'r') as f: data = json.load(f)
+    with open(path, 'w') as f:
+        if full_name in data: data[full_name] += 1
+        else: data[full_name] = 1
+
+        json.dump(data, f, indent=4)
 
 def save_graph(name: str, data: dict):
-
     plt.style.use('default')  
     sns.set_palette("deep") 
 
@@ -11,8 +21,8 @@ def save_graph(name: str, data: dict):
         if f'learn_time_{i}' in data:
             learn_time.append(data[f'learn_time_{i}'])
         else: learn_time.append(0)
+        
     code_time = []
-    print("code_time_20" in data)
     for i in range(1, 25):
         if f'code_time_{i}' in data:
             code_time.append(data[f'code_time_{i}'])
@@ -20,12 +30,9 @@ def save_graph(name: str, data: dict):
 
     hours = [i for i in range(1, 25)]
 
-    print(hours, learn_time)
-    print(hours, code_time)
-
     plt.figure(figsize=(10, 6), facecolor='#121212')  # Размер и цвет фона
-    sns.lineplot(x=hours, y=learn_time, linewidth=8, label='Code')
-    sns.lineplot(x=hours, y=code_time, linewidth=8, label="Learn")
+    sns.lineplot(x=hours, y=learn_time, linewidth=8, label='Learn')
+    sns.lineplot(x=hours, y=code_time, linewidth=8, label="Code")
 
     plt.title("Productivity", fontsize=14, pad=20, color='white')
     plt.xlabel("Hours", fontsize=24)

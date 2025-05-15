@@ -13,3 +13,6 @@ class Config():
     @property
     def token(self):
         return self.config['token']
+    @property
+    def frong_token_error(self):
+        return self.config['frong_token_error']
