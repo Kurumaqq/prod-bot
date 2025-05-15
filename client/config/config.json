@@ -1,7 +1,7 @@
 {
-    "host": "127.0.0.1",
+    "host": "0.0.0.0",
     "port": "5000",
-    "learn_name": "firefox",
-    "code_name": "code",
-    "token": "A99A9DF46DD5926EB0E59E6D51196F3536192D7D9961231815DD552"
+    "learn_name": "",
+    "code_name": "",
+    "token": ""
 }
