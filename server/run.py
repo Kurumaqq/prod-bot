@@ -8,4 +8,4 @@ config = Config('config/config.json')
 load_rule(app)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host=config.host, port=config.port)

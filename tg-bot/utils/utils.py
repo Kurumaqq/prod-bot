@@ -1,12 +1,13 @@
 import json
 from datetime import datetime
+from pathlib import Path
 
 class Times():
-    hours: int
-    minutes: int
+    hours = 0
+    minutes = 0
 
-def get_minutes(name: str):
-    with open(f'../server/temp/{datetime.now().date()}.json') as f:
+def get_minutes(name: str, path: str):
+    with open(path, 'r') as f:
         data = json.load(f)
     minutes = 0
     for i in data:
@@ -14,8 +15,14 @@ def get_minutes(name: str):
             minutes += data[i]
     return minutes
 
-def to_hours(minutes: int):
-    while minutes > 60: 
-        minutes -= 60
-        minutes += 1
-    return minutes
+def to_hours(times: Times):
+    while times.minutes > 60: 
+        times.minutes -= 60
+        times.hours += 1
+
+def get_saves(path: str):
+    saves_dir = Path(path)
+    return [
+        str(i).split('\\')[-1].split('/')[-1] 
+        for i in saves_dir.iterdir()
+    ] 

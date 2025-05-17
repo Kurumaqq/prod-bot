@@ -7,5 +7,5 @@ if __name__ == '__main__':
     with open('config/config.json', 'r') as f: config = json.load(f)
     config = Config('config/config.json')
 
-    asyncio.run(send_request_every_minute(config.learn_name, config.code_name))
+    send_request_every_minute(config.learn_name, config.code_name)
     

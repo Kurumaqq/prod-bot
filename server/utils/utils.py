@@ -17,22 +17,22 @@ def save_graph(name: str, data: dict):
     sns.set_palette("deep") 
 
     learn_time = []
-    for i in range(1, 25):
+    for i in range(0, 24):
         if f'learn_time_{i}' in data:
             learn_time.append(data[f'learn_time_{i}'])
         else: learn_time.append(0)
         
     code_time = []
-    for i in range(1, 25):
+    for i in range(0, 24):
         if f'code_time_{i}' in data:
             code_time.append(data[f'code_time_{i}'])
         else: code_time.append(0)
 
-    hours = [i for i in range(1, 25)]
+    hours = [i for i in range(0, 24)]
 
     plt.figure(figsize=(10, 6), facecolor='#121212')  # Размер и цвет фона
-    sns.lineplot(x=hours, y=learn_time, linewidth=8, label='Learn')
-    sns.lineplot(x=hours, y=code_time, linewidth=8, label="Code")
+    sns.lineplot(x=hours, y=code_time, linewidth=8, label='Code')
+    sns.lineplot(x=hours, y=learn_time, linewidth=8, label="Learn")
 
     plt.title("Productivity", fontsize=14, pad=20, color='white')
     plt.xlabel("Hours", fontsize=24)

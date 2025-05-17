@@ -2,17 +2,33 @@ import json
 
 class Config():
     def __init__(self, path: str):
-        self.config = json.load(open(path, 'r'))
+        self.path = path
 
     @property
     def host(self):
-        return self.config['host']
+        with open(self.path, 'r') as f:
+            return json.load(f)['host']
+
     @property
     def port(self):
-        return self.config['port']
+        with open(self.path, 'r') as f:
+            return json.load(f)['port']
     @property
     def token(self):
-        return self.config['token']
+        with open(self.path, 'r') as f:
+            return json.load(f)['token']
     @property
     def frong_token_error(self):
-        return self.config['frong_token_error']
+        with open(self.path, 'r') as f:
+            return json.load(f)['frong_token_error']
+    
+    @property
+    def last_date(self):
+        with open(self.path, 'r') as f:
+            return json.load(f)['last_date']
+        
+    @last_date.setter
+    def last_date(self, value):
+        with open(self.path, 'r') as f: data = json.load(f)
+        data['last_date'] = value
+        with open(self.path, 'w') as f: json.dump(data, f, indent=4)

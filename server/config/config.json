@@ -2,5 +2,6 @@
     "host": "0.0.0.0",
     "port": 5000,
     "token": "",
-    "frong_token_error": "Error authorization 402"
+    "frong_token_error": "Error authorization 402",
+    "last_date": ""
 }
