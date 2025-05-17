@@ -1,14 +1,15 @@
-from aiogram import Router
-from aiogram import Bot
 from aiogram.types import Message, FSInputFile, CallbackQuery
 from aiogram.filters import Command
-import requests
-from utils.config import Config
-import os
-from datetime import datetime
-from utils.keyboard import commands_kb, get_saves_kb
-from utils.utils import Times, get_minutes, to_hours
+from aiogram import Router
+from aiogram import Bot
+from aiogram import F
+from utils.utils import Times, get_time, get_caption
 from utils.utils import get_saves
+from utils.keyboard import commands_kb, get_saves_kb
+from utils.config import Config
+from datetime import datetime
+import requests
+import os
 
 config = Config('config/config.json')
 router = Router()
@@ -24,70 +25,70 @@ async def get_data(msg: Message, bot: Bot):
 
     learn_time = Times()
     code_time = Times()
+    path = '../server/temp'
 
-    learn_time.minutes = get_minutes(
+    get_time(
         name='learn', 
-        path=f'../server/temp/{name}.json'
+        path=f'{path}/{name}.json',
+        time=learn_time
         )
-    code_time.minutes = get_minutes(
+    get_time(
         name='code', 
-        path=f'../server/temp/{name}.json'
+        path=f'{path}/{name}.json',
+        time=code_time
         )
-    to_hours(learn_time)
-    to_hours(code_time)
-
-    caption = f'''
-CODE TIME: {code_time.hours} hours {code_time.minutes} minute
-LEARN TIME: {learn_time.hours} hours {learn_time.minutes} minute'''
 
     await bot.send_photo(msg.chat.id,
         FSInputFile(f'../server/temp/{name}.jpg'),
-        caption=caption,
+        caption=get_caption(code_time, learn_time),
         reply_markup=commands_kb
         )
+    
+    os.remove(f'../server/temp/{name}.jpg')
+    os.remove(f'../server/temp/{name}.json')
 
-@router.message(Command('hui'))
+@router.message(Command('history'))
 async def hui(msg: Message):
-    # print(get_saves_kb())
     await msg.answer('hui', reply_markup=get_saves_kb())
 
-@router.callback_query()
-async def saves_cb(cb: CallbackQuery, bot: Bot):
-    saves = get_saves('../server/saves')
-    if cb.data.split('_')[0] == 'Next':
-        await cb.answer()
-        page = int(cb.data.split('_')[1]) + 1
+@router.callback_query(F.data.startswith('Next_'))
+async def next_cb(cb: CallbackQuery):
+    await cb.answer()
+    page = int(cb.data.split('_')[1]) + 1
+    await cb.message.delete()
+    await cb.message.answer('hui', reply_markup=get_saves_kb(page))
+
+@router.callback_query(F.data.startswith('Previous_'))
+async def next_cb(cb: CallbackQuery):
+    await cb.answer()
+    page = int(cb.data.split('_')[1]) - 1 
+    if page > 0:
+        await cb.message.delete()
         await cb.message.answer('hui', reply_markup=get_saves_kb(page))
 
-    if cb.data.split('_')[0] == 'Previous':
-        page = int(cb.data.split('_')[1]) - 1 
-        if page >= 0:
-            await cb.message.answer('hui', reply_markup=get_saves_kb(page))
-
+@router.callback_query()
+async def send_saves(cb: CallbackQuery, bot: Bot):
+    await cb.answer()
+    saves = get_saves('../server/saves')
     if cb.data in saves:
-        await cb.answer()
-
         learn_time = Times()
         code_time = Times()
+        path = f'../server/saves/{cb.data}'
 
-        learn_time.minutes = get_minutes(
+        get_time(
             name='learn',
-            path=f'../server/saves/{cb.data}/{cb.data}.json'
+            path=f'{path}/{cb.data}.json',
+            time=learn_time
             )
-        code_time.minutes = get_minutes(
+        get_time(
             name='code',
-            path=f'../server/saves/{cb.data}/{cb.data}.json'
+            path=f'{path}/{cb.data}.json',
+            time=code_time
             )
-        to_hours(learn_time)
-        to_hours(code_time)
-
-        caption = f'''
-    CODE TIME: {code_time.hours} hours {code_time.minutes} minute
-    LEARN TIME: {learn_time.hours} hours {learn_time.minutes} minute'''
-
+        
         await bot.send_photo(
             cb.message.chat.id,
             FSInputFile(f'../server/saves/{cb.data}/{cb.data}.jpg'),
-            caption=caption,
+            caption=get_caption(code_time, learn_time),
             reply_markup=commands_kb
         )

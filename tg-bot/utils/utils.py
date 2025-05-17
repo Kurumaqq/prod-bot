@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 from pathlib import Path
 
 class Times():
@@ -26,3 +25,13 @@ def get_saves(path: str):
         str(i).split('\\')[-1].split('/')[-1] 
         for i in saves_dir.iterdir()
     ] 
+
+def get_time(time: Times, path: str, name: str):
+    time.minutes = get_minutes(name, path) 
+    to_hours(time)
+
+def get_caption(code_times: Times, learn_times: Times):
+    return (
+        f"💻 CODE TIME: {code_times.hours} hours {code_times.minutes} minutes\n"
+        f"🧠 LEARN TIME: {learn_times.hours} hours {learn_times.minutes} minutes"
+    )

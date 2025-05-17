@@ -5,7 +5,8 @@ from aiogram.types import (
 from utils.utils import get_saves
 
 commands_kb = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='/get', callback_data='/get')]
+    [KeyboardButton(text='/get', callback_data='/get')],
+    [KeyboardButton(text='/history', callback_data='/history')]
     ],
     resize_keyboard=True)
 

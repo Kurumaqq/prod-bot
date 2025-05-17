@@ -26,3 +26,8 @@ class Config():
     @property
     def url(self):
         return f'http://{self.host}:{self.port}'
+
+    @property
+    def bot_token(self):
+        with open(self.path, 'r') as f:
+            return json.load(f)['bot_token']

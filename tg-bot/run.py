@@ -1,17 +1,12 @@
 from aiogram import Bot, Dispatcher
-import requests
-from aiogram.filters import Command
-from aiogram.types import message, FSInputFile
-from datetime import datetime
-from dotenv import load_dotenv
-from os import getenv
-import asyncio
 from utils.routers import router
-import json
-import os
+from utils.config import Config
+from dotenv import load_dotenv
+import asyncio
 
 load_dotenv()
-bot = Bot(getenv('TOKEN'))
+config = Config('config/config.json')
+bot = Bot(config.bot_token)
 dp = Dispatcher()
 
 
