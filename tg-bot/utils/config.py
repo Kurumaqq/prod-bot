@@ -22,7 +22,7 @@ class Config():
     @property
     def headers(self):
         with open(self.path, 'r') as f:
-            return {'Authorization': json.load(f)['token']}
+            return {'Authorization': f'Bearer {json.load(f)['token']}'}
     @property
     def url(self):
         return f'http://{self.host}:{self.port}'

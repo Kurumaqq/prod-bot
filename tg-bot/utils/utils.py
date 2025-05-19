@@ -15,7 +15,7 @@ def get_minutes(name: str, path: str):
     return minutes
 
 def to_hours(times: Times):
-    while times.minutes > 60: 
+    while times.minutes >= 60: 
         times.minutes -= 60
         times.hours += 1
 

@@ -12,7 +12,7 @@ commands_kb = ReplyKeyboardMarkup(keyboard=[
 
 def get_saves_kb(page=1):
     saves = get_saves('../server/saves')
-    items_per_page = 2
+    items_per_page = 10
     start = (page - 1) * items_per_page
     end = start + items_per_page
     sliced_saves = saves[start:end]

@@ -16,11 +16,7 @@ class Config():
     @property
     def token(self):
         with open(self.path, 'r') as f:
-            return json.load(f)['token']
-    @property
-    def frong_token_error(self):
-        with open(self.path, 'r') as f:
-            return json.load(f)['frong_token_error']
+            return f'Bearer {json.load(f)['token']}'
     
     @property
     def last_date(self):

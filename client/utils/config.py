@@ -17,4 +17,4 @@ class Config():
     def code_name(self): return self.config['code_name']
 
     @property
-    def token(self): return self.config['token']
+    def token(self): return f'Bearer {self.config['token']}'

@@ -14,30 +14,32 @@ def check_procces(name: str):
             return True
     return False
 
-def get_request(route: str, data_name: str):
+def send_request_add_time(name: str):
     curr_time = datetime.now().time().strftime('%H')
+    headers = {'Authorization': config.token}
     if curr_time == '00': curr_time = '0'
     elif curr_time[0] == '0': curr_time = curr_time[1]
-    requests.get(
-        f'http://{config.host}:{config.port}/{route}', 
-        headers={'Authorization': config.token},
-        json={data_name:curr_time},
+    requests.post(
+        f'http://{config.host}:{config.port}/add-time/{name}', 
+        headers=headers,
+        params={'hours': curr_time},
     )
 
 def send_request_every_minute(learn_name: str, code_name: str):
     while True:
-        cur_date = datetime.now().date()
+        cur_date = datetime.now().date().strftime('%Y-%m-%d')
         try:
             if check_procces(learn_name): 
-                get_request(route='learn', data_name='hours')
+                send_request_add_time(name='learn')
 
             if check_procces(code_name): 
-                get_request(route='code', data_name='hours')
-            sleep(60)
+                send_request_add_time(name='code')
+
             headers = {'Authorization': config.token}
-            requests.get(
-                f'http://{config.host}:{config.port}/save-data',
+            requests.post(
+                f'http://{config.host}:{config.port}/save',
                 headers=headers,
-                json={'date': cur_date.strftime('%Y-%m-%d')}
+                params={'date': cur_date}
             )
+            sleep(60)
         except: continue

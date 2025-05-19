@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import json
 
-def add_time(name: str, path: str, hours:str):
+def add_time_data(name: str, path: str, hours:str):
     full_name = f'{name}_time_{hours}'
 
     with open(path, 'r') as f: data = json.load(f)

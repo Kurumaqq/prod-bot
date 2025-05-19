@@ -1,11 +1,17 @@
-from flask import Flask, request
+from fastapi import FastAPI
 from utils.config import Config
-from utils.load_rule import load_rule
+from utils.route import router
+import uvicorn
 
-app = Flask(__name__)
+app = FastAPI()
 config = Config('config/config.json')
 
-load_rule(app)
+app.include_router(router)
 
 if __name__ == '__main__':
-    app.run(host=config.host, port=config.port)
+    uvicorn.run(
+        'run:app', 
+        host=config.host,
+        port=config.port,
+        reload=True
+        )

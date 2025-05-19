@@ -16,11 +16,11 @@ router = Router()
 
 @router.message(Command('get'))
 async def get_data(msg: Message, bot: Bot):
-    name = datetime.now().date().strftime(r'%Y-%m-%d')
-    requests.get(
-        f'{config.url}/save-temp-data',
-        json={'name': name},
-        headers=config.headers
+    date = datetime.now().date().strftime(r'%Y-%m-%d')
+    requests.post(
+        f'{config.url}/save/temp',
+        headers=config.headers,
+        params={'date': date},
         )
 
     learn_time = Times()
@@ -29,27 +29,27 @@ async def get_data(msg: Message, bot: Bot):
 
     get_time(
         name='learn', 
-        path=f'{path}/{name}.json',
+        path=f'{path}/{date}.json',
         time=learn_time
         )
     get_time(
         name='code', 
-        path=f'{path}/{name}.json',
+        path=f'{path}/{date}.json',
         time=code_time
         )
 
     await bot.send_photo(msg.chat.id,
-        FSInputFile(f'../server/temp/{name}.jpg'),
+        FSInputFile(f'../server/temp/{date}.jpg'),
         caption=get_caption(code_time, learn_time),
         reply_markup=commands_kb
         )
     
-    os.remove(f'../server/temp/{name}.jpg')
-    os.remove(f'../server/temp/{name}.json')
+    os.remove(f'../server/temp/{date}.jpg')
+    os.remove(f'../server/temp/{date}.json')
 
 @router.message(Command('history'))
-async def hui(msg: Message):
-    await msg.answer('hui', reply_markup=get_saves_kb())
+async def history(msg: Message):
+    await msg.answer('Your actives history', reply_markup=get_saves_kb())
 
 @router.callback_query(F.data.startswith('Next_'))
 async def next_cb(cb: CallbackQuery):
