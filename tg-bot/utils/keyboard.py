@@ -12,15 +12,16 @@ commands_kb = ReplyKeyboardMarkup(keyboard=[
 
 def get_saves_kb(page=1):
     saves = get_saves('../server/saves')
+    sorted_saves = sorted(saves, reverse=True)
     items_per_page = 10
     start = (page - 1) * items_per_page
     end = start + items_per_page
-    sliced_saves = saves[start:end]
+    sliced_saves = sorted_saves[start:end]
 
-    page_kb =[[
-        InlineKeyboardButton(text=i, callback_data=i)] 
+    page_kb = [
+        [InlineKeyboardButton(text=i, callback_data=i)]
         for i in sliced_saves
-        ]
+    ]
     page_kb.append([
         InlineKeyboardButton(text='Previous', callback_data=f'Previous_{page}'),
         InlineKeyboardButton(text='Next', callback_data=f'Next_{page}'),
